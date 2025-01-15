@@ -32,10 +32,18 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
+      ],
+      [
+        "expo-asset",
+        {
+          "assets": ["./assets/porsche.glb"]
+        }
       ]
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+
+    "assetBundlePatterns": ["**/*"]
   }
 }
