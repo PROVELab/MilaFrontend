@@ -31,7 +31,7 @@ const Sphere = React.memo(({ position, onClick, color }) => {
       e.stopPropagation();
       onClick(e);
     },
-    [onClick],
+    [onClick]
   );
 
   return (
@@ -86,9 +86,17 @@ function ThreeScene() {
 
   const sceneRef = useRef(null);
 
-  const handleSphereClick = useCallback((e, text, position) => {
+  const handleSphereClick = useCallback(async (e, id) => {
     e.stopPropagation();
-    setTooltip({ text, position });
+    try {
+      const response = await fetch(
+        `http://localhost:3000/sphere-data?id=${id}`
+      );
+      const data = await response.json();
+      setTooltip({ text: data.description, position: [1, 1.2, 1] });
+    } catch (error) {
+      console.error("Error fetching sphere data:", error);
+    }
   }, []);
 
   const handleCanvasClick = useCallback(() => {
@@ -125,16 +133,12 @@ function ThreeScene() {
 
           <Sphere
             position={[0, 0.5, 1]}
-            onClick={(e) =>
-              handleSphereClick(e, "Interactive Point 1", [1, 1.2, 1])
-            }
+            onClick={(e) => handleSphereClick(e, 1)}
             color={sphereColor}
           />
           <Sphere
             position={[-1, 0.5, -1]}
-            onClick={(e) =>
-              handleSphereClick(e, "Interactive Point 2", [-1, 0.7, -1])
-            }
+            onClick={(e) => handleSphereClick(e, 2)}
             color={sphereColor}
           />
 
